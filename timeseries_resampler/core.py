@@ -22,7 +22,7 @@ FORMATS = ("%Y-%m-%d %H:%M:%S", "%Y-%m-%dT%H:%M:%S", "%Y-%m-%d %H:%M", "%Y-%m-%d
 def parse_time(text, fmt=None):
     t = text.strip()
     if fmt == "epoch" or (fmt is None and re.fullmatch(r"\d{9,11}(\.\d+)?", t)):
-        return dt.datetime.utcfromtimestamp(float(t)) if hasattr(dt.datetime, "utcfromtimestamp") else None
+        return dt.datetime.fromtimestamp(float(t), dt.timezone.utc).replace(tzinfo=None)
     if fmt:
         return dt.datetime.strptime(t, fmt)
     t = re.sub(r"(\.\d+)?(Z|[+-]\d\d:?\d\d)$", "", t)
